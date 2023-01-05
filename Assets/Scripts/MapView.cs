@@ -16,9 +16,11 @@ public class MapView : MonoBehaviour
     private char _startVertex;
     private Dictionary<char, CityView> _cityViews;
     private Dictionary<EdgeModel, RoadView> _roadsViews;
+    
+    private CaptureAllCitiesGoal _goalPlayer1;
+    private CaptureAllCitiesGoal _goalPlayer2;
 
-    private Planner _planner1;
-    private Planner _planner2;
+    private Planner _planner;
 
     private void Start()
     {
@@ -49,9 +51,8 @@ public class MapView : MonoBehaviour
             roadView.Connect(cityA, cityB, pair.Value);
             _roadsViews.Add(pair.Key, roadView);
         }
-
-        _planner1 = new Planner(1);
-        _planner2 = new Planner(2);
+        
+        _planner = new Planner();
         StartCoroutine(WaitUnitsThenStart());
 
     }
@@ -61,8 +62,8 @@ public class MapView : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         
-        _planner1.CreateAttackEnemyCityPlan();
-        _planner2.CreateAttackEnemyCityPlan();
+        _goalPlayer1 = new CaptureAllCitiesGoal(1);
+        _goalPlayer2 = new CaptureAllCitiesGoal(2);
     }
 
     private void Update()
@@ -85,7 +86,6 @@ public class MapView : MonoBehaviour
             Destroy(spawn.gameObject,1);
         }
         
-        _planner1.ManualUpdate(Time.deltaTime);
-        _planner2.ManualUpdate(Time.deltaTime);
+        _planner.ManualUpdate(Time.deltaTime);
     }
 }

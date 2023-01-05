@@ -8,6 +8,7 @@ public class MapModel
     public static IEnumerable<CityModel> Cities => instance._cities;
     public static Road[] Roads => instance._roads;
     public static Dictionary<byte, List<UnitModel>> Units => instance._units;
+    public static List<UnitModel> AllUnits => instance._allUnits;
     public static bool Exists => instance != null;
     public static Graph Graph => instance._graph;
 
@@ -19,6 +20,7 @@ public class MapModel
     private Dictionary<char, CityModel> _citiesMap;
     private static MapModel instance;
     private Graph _graph;
+    private List<UnitModel> _allUnits;
 
     public MapModel(IEnumerable<CityModel> cities, Road[] roads)
     {
@@ -27,6 +29,7 @@ public class MapModel
         _units = new Dictionary<byte, List<UnitModel>>();
         _units[1] = new List<UnitModel>();
         _units[2] = new List<UnitModel>();
+        _allUnits = new List<UnitModel>();
 
         _citiesMap = new Dictionary<char, CityModel>();
 
@@ -65,6 +68,7 @@ public class MapModel
     public static void AddUnit(UnitModel unitModel)
     {
         instance._units[unitModel.Owner].Add(unitModel);
+        instance._allUnits.Add(unitModel);
         OnUnitAdded?.Invoke(unitModel);
     }
 
@@ -113,5 +117,6 @@ public class MapModel
     {
         RemoveUnitFromCity(unitModel);
         instance._units[unitModel.Owner].Remove(unitModel);
+        instance._allUnits.Remove(unitModel);
     }
 }
