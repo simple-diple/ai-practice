@@ -124,6 +124,21 @@ public class CityModel
 
         return result;
     }
+    
+    public float GetUnitsHealthByOwner(byte owner)
+    {
+        float result = 0;
+
+        foreach (var unit in _units)
+        {
+            if (unit.Owner == owner)
+            {
+                result += unit.HealthNormalized;
+            }
+        }
+
+        return result;
+    }
 
     public bool CanCapture()
     {

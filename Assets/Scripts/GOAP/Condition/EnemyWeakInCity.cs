@@ -15,8 +15,8 @@ namespace GOAP.Condition
 
         public bool IsComplete()
         {
-            var enemies = _enemyCityModel.GetUnitsCountByOwner(_enemyCityModel.Owner);
-            var myUnits = _playerCityModel.GetUnitsCountByOwner(_playerCityModel.Owner);
+            var enemies = _enemyCityModel.GetUnitsHealthByOwner(_enemyCityModel.Owner);
+            var myUnits = _playerCityModel.GetUnitsHealthByOwner(_playerCityModel.Owner);
 
             return enemies < myUnits;
         }

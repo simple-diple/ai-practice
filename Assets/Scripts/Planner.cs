@@ -60,6 +60,7 @@ public class Planner
 			    if (actions.Count == 0)
 			    {
 				    unit.Idle(true);
+				    break;
 			    }
 
 //#if LOOP_TRACKING

@@ -3,7 +3,6 @@ using System.Linq;
 using GOAP.Action;
 using GOAP.Condition;
 using UnityEngine;
-using Idle = GOAP.Precondition.Idle;
 
 public class CaptureAllCitiesGoal
 {
@@ -121,7 +120,7 @@ public class CaptureAllCitiesGoal
         foreach (var unit in MapModel.Units[_player])
         {
             unit.ReleaseActions();
-            unit.Actions.Add(GOAP.Action.Idle.Create(unit, null, null));
+            unit.Actions.Add(Idle.Create(unit, null, null));
         }
 	    
         CreateAttackEnemyCityPlan();
@@ -141,7 +140,7 @@ public class CaptureAllCitiesGoal
             foreach (var unit in MapModel.Units[_player])
             {
                 UIDebug.SetTarget(_cityModelForAttack, TargetType.Protect, _player);
-                GOAP.Action.Idle wait = GOAP.Action.Idle.Create(unit, UnitEnterTheCityCollectArmy, null, noEnemyNearMyCity);
+                Idle wait = Idle.Create(unit, UnitEnterTheCityCollectArmy, null, noEnemyNearMyCity);
                 unit.Actions.Add(wait);
             }
             return;
@@ -204,7 +203,7 @@ public class CaptureAllCitiesGoal
         {
             foreach (var unitModel in unit.CityModel.GetUnitsByOwner(_player))
             {
-                GOAP.Action.Idle move = GOAP.Action.Idle.Create(
+                Idle move = Idle.Create(
                     unitModel,
                     CityArmyReadyForAttack,
                     null,
