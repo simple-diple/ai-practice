@@ -20,11 +20,11 @@ public class UnitModel
     private Vector3 _target;
     private Vector3 _position;
     private float _health = _MAX_HEALTH;
-    private readonly float _attackRange = 5;
+    private readonly float _attackRange = 9;
     private readonly float _reloadTime = 1;
     private float _currentReloadValue = 1;
     private bool _isDied;
-    private List<IAction> _actions;
+    private readonly List<IAction> _actions;
     private const float _MAX_HEALTH = 1f;
 
     public bool IsIdle => _isIdle;
@@ -44,8 +44,7 @@ public class UnitModel
     private bool _isTargetReached;
     private readonly UnitView _view;
     public bool lastFrameLoopedAction;
-
-    public event Action<Vector3> OnSetTarget;
+    
 
     public UnitModel(byte owner, UnitView view)
     {
@@ -71,19 +70,11 @@ public class UnitModel
         }
     }
 
-    public void Attack(UnitModel u)
-    {
-        _targetUnit = u;
-        _isIdle = false;
-        var distancePoint = (u._position - _position.normalized * _attackRange);
-        OnSetTarget?.Invoke(distancePoint);
-    }
-
     public void SetTarget(CityModel c)
     {
         _targetCityModel = c;
         _isIdle = false;
-        OnSetTarget?.Invoke(c.Position);
+        _view.SetTarget(c.Position);
     }
 
     private bool FindEnemy()
@@ -123,6 +114,7 @@ public class UnitModel
     {
         if (Reload(dt) && _targetUnit != null)
         {
+            _view.Attack();
             float damage = Random.Range(0.1f, 0.2f) * _health;
             _targetUnit.GetDamage(damage);
         }
@@ -166,7 +158,7 @@ public class UnitModel
         MapModel.RemoveUnit(this);
         _view.Dispose();
     }
-
+    
     public void Tick(float deltaTime)
     {
         if (_isDied)
@@ -178,7 +170,14 @@ public class UnitModel
         
         if (FindEnemy())
         {
+            _view.Stop();
+            _view.LookAt(_targetUnit.Position);
             Attack(deltaTime);
+        }
+
+        else if (_targetCityModel != null)
+        {
+            _view.SetTarget(_targetCityModel.Position);
         }
     }
 

@@ -5,7 +5,7 @@ namespace GOAP.Condition
     public class NoEnemyNearMyCity : ObjectsPool<NoEnemyNearMyCity>, ICondition
     {
         private CityModel _city;
-        private const float _RADIUS = 10f;
+        private const float _RADIUS = 15f;
         
         public static NoEnemyNearMyCity Create(CityModel city)
         {

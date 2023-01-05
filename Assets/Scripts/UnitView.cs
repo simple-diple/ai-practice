@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,6 +7,7 @@ public class UnitView : MonoBehaviour
     [SerializeField] private Renderer rend;
     [SerializeField] private Transform hp;
     [SerializeField] private ParticleSystem damageEffect;
+    [SerializeField] private ParticleSystem attackEffect;
 
     private UnitModel _unitModel;
     private const float _MAX_HP_SCALE = 0.5f;
@@ -16,12 +16,6 @@ public class UnitView : MonoBehaviour
     {
         _unitModel = unitModel;
         rend.material.color = PlayerColor.Get(_unitModel.Owner);
-        _unitModel.OnSetTarget += OnUnitModelSetTarget;
-    }
-
-    private void OnUnitModelSetTarget(Vector3 target)
-    {
-        navMeshAgent.SetDestination(target);
     }
 
     void Update()
@@ -42,5 +36,26 @@ public class UnitView : MonoBehaviour
     public void GetDamageEffect()
     {
         damageEffect.Play();
+    }
+
+    public void SetTarget(Vector3 position)
+    {
+        navMeshAgent.isStopped = false;
+        navMeshAgent.SetDestination(position);
+    }
+
+    public void Stop()
+    {
+        navMeshAgent.isStopped = true;
+    }
+
+    public void LookAt(Vector3 target)
+    {
+        transform.LookAt(target);
+    }
+
+    public void Attack()
+    {
+        attackEffect.Play();
     }
 }
