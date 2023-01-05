@@ -13,13 +13,13 @@ namespace GOAP.Action
 
         protected override float Process(float dt)
         {
-            unit.Idle(true);
+            unit?.Idle(true);
             return 0f;
         }
 
         protected override void OnComplete(bool isCanceled)
         {
-            unit.Idle(false);
+            unit?.Idle(false);
             base.OnComplete(isCanceled);
         }
 

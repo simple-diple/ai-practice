@@ -202,7 +202,7 @@ public class UnitModel
         _isIdle = value;
     }
 
-    private void ReleaseActions()
+    public void ReleaseActions()
     {
         for (var i = _actions.Count - 1; i >= 0; --i)
         {

@@ -45,7 +45,7 @@ public class CaptureAllCitiesGoal
             cityModel,
             UnitEnterTheCityCollectArmy,  
             UnitEnteredCity.Create(newUnit, cityModel), 
-            Idle.Create(newUnit));
+            null);
 
         return move;
     }
@@ -63,7 +63,7 @@ public class CaptureAllCitiesGoal
             Debug.Log("!!!VICTORY!!!");
             return;
         }
-        
+
         (_myCityModel, _enemyCityModel) = GetFirstMyAndEnemyCity(_player);
         _func = _algorithms.ShortestEnemyCity(_myCityModel, Opponent.Get(_player));
 	    
@@ -120,7 +120,7 @@ public class CaptureAllCitiesGoal
 
         foreach (var unit in MapModel.Units[_player])
         {
-            unit.CancelActions();
+            unit.ReleaseActions();
             unit.Actions.Add(GOAP.Action.Idle.Create(unit, null, null));
         }
 	    
@@ -170,7 +170,7 @@ public class CaptureAllCitiesGoal
                 _cityModelForAttack,
                 UnitsEnteredInEnemyCity,  
                 CityCaptured.Create(_cityModelForAttack, _player), 
-                Idle.Create(unitModel));
+                null);
             
             unitModel.Actions.Add(move);
         }
@@ -178,6 +178,7 @@ public class CaptureAllCitiesGoal
 
     private void UnitEnterTheCityCollectArmy(UnitModel unit, bool isCanceled)
     {
+
         if (unit.CityModel == null)
         {
             return;

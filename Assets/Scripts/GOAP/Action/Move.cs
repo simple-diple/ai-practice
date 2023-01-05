@@ -16,6 +16,16 @@ namespace GOAP.Action
             a.onActionComplete += d;
             a._cityModel = cityModel;
             u.SetTarget(cityModel);
+
+            for (var index = u.Actions.Count - 1; index >= 0; index--)
+            {
+                var action = u.Actions[index];
+                if (action is Move)
+                {
+                    u.Actions.Remove(action);
+                }
+            }
+
             return a;
         }
 
