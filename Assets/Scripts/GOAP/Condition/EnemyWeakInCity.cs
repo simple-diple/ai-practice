@@ -12,11 +12,13 @@ namespace GOAP.Condition
             condition._enemyCityModel = enemyCityModel;
             return condition;
         }
-        
+
         public bool IsComplete()
         {
-            return _enemyCityModel.GetUnitsCountByOwner(_enemyCityModel.Owner) <
-                   _playerCityModel.GetUnitsCountByOwner(_playerCityModel.Owner);
+            var enemies = _enemyCityModel.GetUnitsCountByOwner(_enemyCityModel.Owner);
+            var myUnits = _playerCityModel.GetUnitsCountByOwner(_playerCityModel.Owner);
+
+            return enemies < myUnits;
         }
     }
 }

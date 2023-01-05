@@ -9,6 +9,7 @@ public class MapModel
     public static Road[] Roads => instance._roads;
     public static Dictionary<byte, List<UnitModel>> Units => instance._units;
     public static bool Exists => instance != null;
+    public static Graph Graph => instance._graph;
 
     public static event Action<UnitModel> OnUnitAdded;
 
@@ -17,6 +18,7 @@ public class MapModel
     private Dictionary<byte, List<UnitModel>> _units;
     private Dictionary<char, CityModel> _citiesMap;
     private static MapModel instance;
+    private Graph _graph;
 
     public MapModel(IEnumerable<CityModel> cities, Road[] roads)
     {
@@ -34,6 +36,11 @@ public class MapModel
         }
         
         instance = this;
+    }
+
+    public static void UpdateGraph()
+    {
+        instance._graph = new Graph();
     }
 
     public static CityModel GetCity(char index)

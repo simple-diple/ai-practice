@@ -6,7 +6,7 @@ public class CityModel
 {
     public char Index => _index;
     public byte Owner => _owner;
-    public Vector3 Position => _cityView.transform.position;
+    public Vector3 Position => _cityView ? _cityView.transform.position : Vector3.zero;
     public IEnumerable<UnitModel> Units => _units;
     public int UnitsCount => _units.Count;
     public float Radius => _radius;
@@ -17,7 +17,7 @@ public class CityModel
     private byte _owner;
     private readonly List<UnitModel> _units;
     private CityView _cityView;
-    private float _radius = 5;
+    private float _radius = 7;
 
     public CityModel(char i, byte o)
     {
@@ -64,20 +64,14 @@ public class CityModel
         {
             return;
         }
-        
-        Graph graph = new Graph();
-        var enemy = Opponent.Get(_owner);
 
-        foreach (CityModel neighbor in graph.AdjacencyList[this])
+        if (CanCapture())
         {
-            var city = MapModel.GetCity(neighbor._index);
-            if (city._owner == enemy)
-            {
-                _owner = enemy;
-                _cityView.SetOwner(enemy);
-                OnOwnerChanged?.Invoke(enemy);
-                return;
-            }
+            var enemy = Opponent.Get(_owner);
+            _owner = enemy;
+            _cityView.SetOwner(enemy);
+            MapModel.UpdateGraph();
+            OnOwnerChanged?.Invoke(enemy);
         }
     }
 
@@ -129,5 +123,22 @@ public class CityModel
         }
 
         return result;
+    }
+
+    public bool CanCapture()
+    {
+        
+        var enemy = Opponent.Get(_owner);
+
+        foreach (CityModel neighbor in MapModel.Graph.AdjacencyList[this])
+        {
+            var city = MapModel.GetCity(neighbor._index);
+            if (city._owner == enemy)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

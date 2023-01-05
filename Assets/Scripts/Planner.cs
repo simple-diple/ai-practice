@@ -11,7 +11,6 @@ public class Planner
     private CityModel _myCityModel;
     private CityModel _enemyCityModel;
     private readonly Algorithms _algorithms;
-    private Graph _graph;
     private Func<CityModel, (CityModel, CityModel)> _func;
     private CityModel _cityModelForAttack;
     private CityModel _cityModelForArmy;
@@ -29,13 +28,15 @@ public class Planner
 		    return;
 	    }
 
-	    newUnit.Actions.Add(_cityModelForAttack != null
-		    ? MoveUnitToCollectArmy(newUnit, _cityModelForAttack)
+	    newUnit.Actions.Add(_cityModelForArmy != null
+		    ? MoveUnitToCollectArmy(newUnit, _cityModelForArmy)
 		    : MoveUnitToCollectArmy(newUnit, _myCityModel));
     }
 
     private Move MoveUnitToCollectArmy(UnitModel newUnit, CityModel cityModel)
     {
+	    UIDebug.SetTarget(cityModel, TargetType.CollectArmy, _player);
+	    
 	    Move move = Move.Create(
 		    newUnit, 
 		    cityModel,
@@ -48,9 +49,8 @@ public class Planner
 
     public void CreateAttackEnemyCityPlan()
     {
-	    _graph = new Graph();
 	    (_myCityModel, _enemyCityModel) = GetFirstMyAndEnemyCity(_player);
-	    _func = _algorithms.ShortestEnemyCity(_graph, _myCityModel, Opponent.Get(_player));
+	    _func = _algorithms.ShortestEnemyCity(_myCityModel, Opponent.Get(_player));
 	    
         (_cityModelForAttack, _cityModelForArmy) = _func.Invoke(_enemyCityModel);
         
@@ -72,8 +72,7 @@ public class Planner
 
     private void CityModelForArmyOnOwnerChanged(byte newOwner)
     {
-	    _graph = new Graph();
-	    foreach (var neighbour in _graph.AdjacencyList[_cityModelForAttack])
+	    foreach (var neighbour in MapModel.Graph.AdjacencyList[_cityModelForAttack])
 	    {
 		    var city = MapModel.GetCity(neighbour.Index);
 		    if (city.Owner == _player)
@@ -98,8 +97,22 @@ public class Planner
 		    return;
 	    }
 	    
+	    var noEnemyNearMyCity = NoEnemyNearMyCity.Create(_cityModelForAttack);
+	    
+	    if (noEnemyNearMyCity.IsComplete() == false)
+	    {
+		    foreach (var unit in MapModel.Units[_player])
+		    {
+			    UIDebug.SetTarget(_cityModelForAttack, TargetType.Protect, _player);
+			    GOAP.Action.Idle wait = GOAP.Action.Idle.Create(unit, UnitEnterTheCityCollectArmy, null, noEnemyNearMyCity);
+			    unit.Actions.Add(wait);
+		    }
+		    return;
+	    }
+
 	    CreateAttackEnemyCityPlan();
     }
+
 
     private void CityArmyReadyForAttack(UnitModel unit, bool complete)
     {
@@ -107,14 +120,22 @@ public class Planner
 	    {
 		    return;
 	    }
+
+	    if (_cityModelForAttack.Owner == _player)
+	    {
+		    CreateAttackEnemyCityPlan();
+		    return;
+	    }
 	    
-	    foreach (var unitModel in unit.CityModel.GetUnitsByOwner(_player))
+	    UIDebug.SetTarget(_cityModelForAttack, TargetType.Attack, _player);
+	    
+	    foreach (var unitModel in _cityModelForArmy.GetUnitsByOwner(_player))
 	    {
 		    Move move = Move.Create(
 			    unitModel, 
 			    _cityModelForAttack,
 			    UnitsEnteredInEnemyCity,  
-			    UnitEnteredCity.Create(unitModel, _cityModelForAttack), 
+			    CityCaptured.Create(_cityModelForAttack, _player), 
 			    Idle.Create(unitModel));
             
 		    unitModel.Actions.Add(move);
@@ -133,9 +154,15 @@ public class Planner
 		    return;
 	    }
 
-	    var condition = EnemyWeakInCity.Create(_cityModelForArmy, _enemyCityModel);
+	    if (_cityModelForAttack.Owner == _player)
+	    {
+		    CreateAttackEnemyCityPlan();
+		    return;
+	    }
+	    
+	    var enemyWeakInCity = EnemyWeakInCity.Create(_cityModelForArmy, _cityModelForAttack);
 
-	    if (condition.IsComplete())
+	    if (enemyWeakInCity.IsComplete())
 	    {
 		    foreach (var unitModel in unit.CityModel.GetUnitsByOwner(_player))
 		    {
@@ -151,7 +178,7 @@ public class Planner
 				    unitModel,
 				    CityArmyReadyForAttack,
 				    null,
-				    condition);
+				    enemyWeakInCity);
 
 			    unitModel.Actions.Add(move);
 		    }
@@ -161,7 +188,10 @@ public class Planner
 
     private void UnitsEnteredInEnemyCity(UnitModel unit, bool iscanceled)
     {
-	    Debug.Log("!!!We are in enemy cityModel!!!");
+	    if (unit.CityModel != null && unit.CityModel.CanCapture() == false)
+	    {
+		    CreateAttackEnemyCityPlan();
+	    }
     }
 
     public void ManualUpdate(float dt)

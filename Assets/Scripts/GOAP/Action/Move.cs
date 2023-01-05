@@ -1,5 +1,3 @@
-using UnityEditor.VersionControl;
-
 namespace GOAP.Action
 {
     public sealed class Move : BaseAction<Move>
@@ -23,8 +21,7 @@ namespace GOAP.Action
 
         protected override float Process(float dt)
         {
-            // NavMeshAgent process
-            return 0;
+            return Equals(unit.CityModel, _cityModel) ? dt : 0;
         }
     }
 }

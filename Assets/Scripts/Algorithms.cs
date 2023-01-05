@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Algorithms
 {
-    private Dictionary<CityModel, CityModel> GetPrevious(Graph graph, CityModel start)
+    private Dictionary<CityModel, CityModel> GetPrevious(CityModel start)
     {
         var previous = new Dictionary<CityModel, CityModel>();
         var queue = new Queue<CityModel>();
@@ -13,7 +13,7 @@ public class Algorithms
         while (queue.Count > 0)
         {
             var vertex = queue.Dequeue();
-            foreach (var neighbor in graph.AdjacencyList[vertex])
+            foreach (var neighbor in MapModel.Graph.AdjacencyList[vertex])
             {
                 if (previous.ContainsKey(neighbor))
                     continue;
@@ -26,22 +26,22 @@ public class Algorithms
         return previous;
     }
     
-    public Func<CityModel, (IEnumerable<CityModel> , byte)> ShortestPathFunction(Graph graph, CityModel start)
+    public Func<CityModel, (IEnumerable<CityModel> , byte)> ShortestPathFunction(CityModel start)
     {
-        var previous = GetPrevious(graph, start);
+        var previous = GetPrevious(start);
 
         (IEnumerable<CityModel> , byte) ShortestPath(CityModel v)
         {
             var path = new List<CityModel> { };
             byte transfersCount = 0;
             var current = v;
-            byte currentLine = graph.GetEgeIndex(new EdgeModel(current, previous[current]));
+            byte currentLine = MapModel.Graph.GetEgeIndex(new EdgeModel(current, previous[current]));
 
             while (!current.Equals(start))
             {
                 path.Add(current);
                 var prev = previous[current];
-                byte previousLine = graph.GetEgeIndex(new EdgeModel(current, prev));
+                byte previousLine = MapModel.Graph.GetEgeIndex(new EdgeModel(current, prev));
 
                 current = previous[current];
 
@@ -62,9 +62,9 @@ public class Algorithms
         return ShortestPath;
     }
 
-    public Func<CityModel, (CityModel, CityModel)> ShortestEnemyCity(Graph graph, CityModel start, byte enemy)
+    public Func<CityModel, (CityModel, CityModel)> ShortestEnemyCity(CityModel start, byte enemy)
     {
-        var previous = GetPrevious(graph, start);
+        var previous = GetPrevious(start);
 
         (CityModel, CityModel) ShortestPath(CityModel v)
         {

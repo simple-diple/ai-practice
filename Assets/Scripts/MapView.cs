@@ -23,9 +23,10 @@ public class MapView : MonoBehaviour
     private void Start()
     {
         Map.Create();
-        var graph = new Graph();
+        MapModel.UpdateGraph();
+        
         _cityViews = new Dictionary<char, CityView>(cityViews.Count);
-        _roadsViews = new Dictionary<EdgeModel, RoadView>(graph.EgeRoads.Count);
+        _roadsViews = new Dictionary<EdgeModel, RoadView>(MapModel.Graph.EgeRoads.Count);
 
         foreach (var cityView in cityViews)
         {
@@ -39,7 +40,7 @@ public class MapView : MonoBehaviour
             _cityViews[city.Index].Connect(city);
         }
 
-        foreach (var pair in graph.EgeRoads)
+        foreach (var pair in MapModel.Graph.EgeRoads)
         {
             CityView cityA = _cityViews[pair.Key.A.Index];
             CityView cityB = _cityViews[pair.Key.B.Index]; ;

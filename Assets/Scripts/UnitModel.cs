@@ -25,7 +25,7 @@ public class UnitModel
     private float _currentReloadValue = 1;
     private bool _isDied;
     private List<IAction> _actions;
-    private const float _MAX_HEALTH = 5;
+    private const float _MAX_HEALTH = 2.5f;
 
     public bool IsIdle => _isIdle;
     public bool IsTargetReached

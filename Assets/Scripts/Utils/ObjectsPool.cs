@@ -77,7 +77,7 @@ public class ObjectsPool<T> where T : ObjectsPool<T>, new()
         {
             if (pool[i] == this)
             {
-                Debug.LogError(typeof(T) + ". Already released " + objCount + " / " + id);
+//                Debug.LogError(typeof(T) + ". Already released " + objCount + " / " + id);
             }
         }
         pool[objCount++] = this;
