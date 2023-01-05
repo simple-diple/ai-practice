@@ -21,6 +21,9 @@ namespace GOAP.Action
 
         protected override float Process(float dt)
         {
+            if (unit == null)
+                return dt;
+            
             return Equals(unit.CityModel, _cityModel) ? dt : 0;
         }
     }

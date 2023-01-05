@@ -7,6 +7,7 @@ public class UnitView : MonoBehaviour
     [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private Renderer rend;
     [SerializeField] private Transform hp;
+    [SerializeField] private ParticleSystem damageEffect;
 
     private UnitModel _unitModel;
     private const float _MAX_HP_SCALE = 0.5f;
@@ -36,5 +37,10 @@ public class UnitView : MonoBehaviour
     public void Dispose()
     {
         Destroy(gameObject);
+    }
+
+    public void GetDamageEffect()
+    {
+        damageEffect.Play();
     }
 }

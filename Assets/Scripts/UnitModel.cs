@@ -130,8 +130,8 @@ public class UnitModel
 
     private void GetDamage(float damage)
     {
-        Debug.Log("Get damage " + damage);
         _health -= damage;
+        _view.GetDamageEffect();
         if (_health <= 0)
         {
             _health = 0;

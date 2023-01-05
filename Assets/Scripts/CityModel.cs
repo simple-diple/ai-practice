@@ -127,7 +127,6 @@ public class CityModel
 
     public bool CanCapture()
     {
-        
         var enemy = Opponent.Get(_owner);
 
         foreach (CityModel neighbor in MapModel.Graph.AdjacencyList[this])

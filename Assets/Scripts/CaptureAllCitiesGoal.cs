@@ -52,6 +52,18 @@ public class CaptureAllCitiesGoal
 
     private void CreateAttackEnemyCityPlan()
     {
+        if (MapModel.GetOwnCitiesCount(_player) == 0)
+        {
+            Debug.Log("!!!DEFEAT!!!");
+            return;
+        }
+        
+        if (MapModel.GetOwnCitiesCount(_player) == MapModel.Cities.Count())
+        {
+            Debug.Log("!!!VICTORY!!!");
+            return;
+        }
+        
         (_myCityModel, _enemyCityModel) = GetFirstMyAndEnemyCity(_player);
         _func = _algorithms.ShortestEnemyCity(_myCityModel, Opponent.Get(_player));
 	    
@@ -143,7 +155,7 @@ public class CaptureAllCitiesGoal
     private void CityArmyReadyForAttack(UnitModel unit, bool isCanceled)
     {
 
-        if (_cityModelForAttack.Owner == _player)
+        if (_cityModelForAttack.Owner == _player || _cityModelForAttack.CanCapture() == false)
         {
             CreateAttackEnemyCityPlan();
             return;
@@ -166,13 +178,12 @@ public class CaptureAllCitiesGoal
 
     private void UnitEnterTheCityCollectArmy(UnitModel unit, bool isCanceled)
     {
-
         if (unit.CityModel == null)
         {
             return;
         }
 
-        if (_cityModelForAttack.Owner == _player)
+        if (_cityModelForAttack.Owner == _player || _cityModelForAttack.CanCapture() == false)
         {
             CreateAttackEnemyCityPlan();
             return;
