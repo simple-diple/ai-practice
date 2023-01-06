@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using GOAP.Action;
 using GOAP.Condition;
@@ -38,12 +39,19 @@ public class CaptureAllCitiesGoal
     private Move MoveUnitToCollectArmy(UnitModel newUnit, CityModel cityModel)
     {
         UIDebug.SetTarget(cityModel, TargetType.CollectArmy, _player);
+        
+        var condition = ComplexCondition.Create(new List<ICondition>()
+        {
+            UnitEnteredCity.Create(newUnit, cityModel),
+            CityCaptured.Create(cityModel, Opponent.Get(_player))
+        }, 
+            ConditionResult.OneComplete);
 	    
         Move move = Move.Create(
             newUnit, 
             cityModel,
             UnitEnterTheCityCollectArmy,  
-            UnitEnteredCity.Create(newUnit, cityModel), 
+            condition, 
             null);
 
         return move;
@@ -177,6 +185,12 @@ public class CaptureAllCitiesGoal
 
     private void UnitEnterTheCityCollectArmy(UnitModel unit, bool isCanceled)
     {
+        if (unit.TargetCityModel.Owner != _player)
+        {
+            unit.ReleaseActions();
+            CreateAttackEnemyCityPlan();
+            return;
+        }
 
         if (unit.CityModel == null)
         {
