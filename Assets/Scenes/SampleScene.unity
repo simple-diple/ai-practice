@@ -416,6 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeName: H
+  unitSpawner: {fileID: 3338700381765488317, guid: c2c6f537716ca460588e96fe47fca721, type: 3}
 --- !u!23 &264537487
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -652,6 +653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeName: B
+  unitSpawner: {fileID: 3338700381765488317, guid: c2c6f537716ca460588e96fe47fca721, type: 3}
 --- !u!23 &530721516
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1067,6 +1069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeName: C
+  unitSpawner: {fileID: 3338700381765488317, guid: c2c6f537716ca460588e96fe47fca721, type: 3}
 --- !u!23 &728636911
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1178,6 +1181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeName: J
+  unitSpawner: {fileID: 3338700381765488317, guid: c2c6f537716ca460588e96fe47fca721, type: 3}
 --- !u!23 &849692765
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1446,6 +1450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeName: G
+  unitSpawner: {fileID: 3338700381765488317, guid: c2c6f537716ca460588e96fe47fca721, type: 3}
 --- !u!23 &1112718637
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1557,6 +1562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeName: A
+  unitSpawner: {fileID: 3338700381765488317, guid: c2c6f537716ca460588e96fe47fca721, type: 3}
 --- !u!23 &1118298807
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1741,6 +1747,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeName: I
+  unitSpawner: {fileID: 3338700381765488317, guid: c2c6f537716ca460588e96fe47fca721, type: 3}
 --- !u!23 &1232634673
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1921,6 +1928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeName: E
+  unitSpawner: {fileID: 3338700381765488317, guid: c2c6f537716ca460588e96fe47fca721, type: 3}
 --- !u!23 &1463894845
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2032,6 +2040,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeName: F
+  unitSpawner: {fileID: 3338700381765488317, guid: c2c6f537716ca460588e96fe47fca721, type: 3}
 --- !u!23 &1512954533
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2706,6 +2715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeName: D
+  unitSpawner: {fileID: 3338700381765488317, guid: c2c6f537716ca460588e96fe47fca721, type: 3}
 --- !u!23 &2088912062
 MeshRenderer:
   m_ObjectHideFlags: 0
