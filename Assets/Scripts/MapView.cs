@@ -74,7 +74,6 @@ public class MapView : MonoBehaviour
             var spawn = Instantiate(spawner);
             spawn.transform.position = worldPosition;
             spawn.owner = 1;
-            Destroy(spawn.gameObject,1);
         }
         
         if (Input.GetMouseButtonDown(1))
@@ -83,7 +82,6 @@ public class MapView : MonoBehaviour
             var spawn = Instantiate(spawner);
             spawn.transform.position = worldPosition;
             spawn.owner = 2;
-            Destroy(spawn.gameObject,1);
         }
         
         _planner.ManualUpdate(Time.deltaTime);

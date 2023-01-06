@@ -5,6 +5,7 @@ using UnityEngine;
 public class CityView : MonoBehaviour
 {
     [SerializeField] private string nodeName;
+    [SerializeField] private UnitSpawner unitSpawner;
 
     public char Node => nodeName[0];
     public byte Owner => _cityModel.Owner;
@@ -13,6 +14,9 @@ public class CityView : MonoBehaviour
     private Renderer _renderer;
     private List<LineRenderer> _lineRenderers;
     private CityModel _cityModel;
+    private const float _SPAWN_UNIT_DELAY = 20;
+    private float _spawnDelay = _SPAWN_UNIT_DELAY;
+    private bool _spawnEnabled = false;
 
     private void Awake()
     {
@@ -32,6 +36,26 @@ public class CityView : MonoBehaviour
 
     private void Update()
     {
-        //_cityModel.CheckOwner();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _spawnEnabled = !_spawnEnabled;
+        }
+        
+        if (_spawnEnabled == false)
+        {
+            return;
+        }
+        
+        _spawnDelay -= Time.deltaTime;
+
+        if (_spawnDelay > 0)
+        {
+            return;
+        }
+
+        _spawnDelay = _SPAWN_UNIT_DELAY;
+        var spawner = Instantiate(unitSpawner);
+        spawner.transform.position = transform.position;
+        spawner.owner = _cityModel.Owner;
     }
 }

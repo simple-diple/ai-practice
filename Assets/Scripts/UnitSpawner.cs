@@ -15,6 +15,7 @@ public class UnitSpawner : MonoBehaviour
         }
 
         Spawn();
+        Destroy(gameObject, 3);
     }
 
     private void Spawn()

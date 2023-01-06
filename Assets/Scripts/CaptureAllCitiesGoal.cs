@@ -31,9 +31,7 @@ public class CaptureAllCitiesGoal
             return;
         }
 
-        newUnit.Actions.Add(_cityModelForArmy != null
-            ? MoveUnitToCollectArmy(newUnit, _cityModelForArmy)
-            : MoveUnitToCollectArmy(newUnit, _myCityModel));
+        newUnit.Actions.Add(MoveUnitToCollectArmy(newUnit, _cityModelForArmy));
     }
 	
     private Move MoveUnitToCollectArmy(UnitModel newUnit, CityModel cityModel)
